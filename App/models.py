@@ -22,7 +22,7 @@ class User(AbstractUser):
         verbose_name='user permissions'
     )
 
-class HealthMetrics(models.Model):
+class HealthMetric(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     height = models.FloatField()
     weight = models.FloatField()
@@ -40,14 +40,14 @@ class RiskAssessment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class Recommendations(models.Model):
+class Recommendation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recommendation_type = models.CharField(max_length=50)
     details = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class Reminders(models.Model):
+class Reminder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reminder_type = models.CharField(max_length=50)
     details = models.TextField()

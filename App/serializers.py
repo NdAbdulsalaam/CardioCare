@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, HealthMetrics, RiskAssessment, Recommendations, Reminders, ProgressTracking
+from .models import User, HealthMetric, RiskAssessment, Recommendation, Reminder, ProgressTracking
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class HealthMetricsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = HealthMetrics
+        model = HealthMetric
         fields = '__all__'
 
 class RiskAssessmentSerializer(serializers.ModelSerializer):
@@ -18,12 +18,12 @@ class RiskAssessmentSerializer(serializers.ModelSerializer):
 
 class RecommendationsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Recommendations
+        model = Recommendation
         fields = '__all__'
 
 class RemindersSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Reminders
+        model = Reminder
         fields = '__all__'
 
 class ProgressTrackingSerializer(serializers.ModelSerializer):
