@@ -2,8 +2,9 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
 class User(AbstractUser):
+    email = models.EmailField(unique=True)
     date_of_birth = models.DateField(null=True, blank=True)
-    gender = models.CharField(max_length=10, null=True, blank=True)
+    gender = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female')])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
