@@ -29,7 +29,13 @@ class UserRegistrationView(View):
         if serializer.is_valid():
             serializer.save()
             # return redirect('login')  # Change this to the name of your login URL
-        return render(request, 'register.html', {'errors': serializer.errors})
+        else: 
+            # Extract error messages
+            errors = []
+            for field, error_list in serializer.errors.items():
+                for error in error_list:
+                    errors.append(str(error))  # Convert ErrorDetail to string
+        return render(request, 'register.html', {'errors': errors})
 
 
 class HealthMetricsView(generics.ListCreateAPIView):

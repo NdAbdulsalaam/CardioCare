@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
         if data['password1'] != data['password2']:
             raise serializers.ValidationError("Passwords do not match")
         return data
-
+    
     def create(self, validated_data):
         validated_data.pop('password2')
         password = validated_data.pop('password1')

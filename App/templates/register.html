@@ -33,6 +33,9 @@
         button:hover {
             background-color: #45a049;
         }
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -40,27 +43,29 @@
         <h2>Register</h2>
         <form method="post">
             {% csrf_token %}
+            {% if errors %}
+                <div class="error">
+                    {% for error in errors %}
+                        <p> {{ error }} </p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
-
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
-
             <label for="date_of_birth">Date of Birth:</label>
             <input type="date" id="date_of_birth" name="date_of_birth" required>
-
             <label for="gender">Gender:</label>
             <select id="gender" name="gender" required>
                 <option value="M">Male</option>
                 <option value="F">Female</option>
             </select>
-
             <label for="password1">Password:</label>
             <input type="password" id="password1" name="password1" required>
-
             <label for="password2">Confirm Password:</label>
             <input type="password" id="password2" name="password2" required>
-
             <button type="submit">Register</button>
         </form>
     </div>
