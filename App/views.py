@@ -8,9 +8,12 @@ from .serializers import UserSerializer, HealthMetricsSerializer, RiskAssessment
 
 from django.shortcuts import render, redirect
 from django.views import View
+from rest_framework.views import APIView
 from django.contrib.auth import login
-from .serializers import UserSerializer, LoginSerializer
+from django.contrib.auth.decorators import login_required
+from .serializers import UserSerializer, LoginSerializer, UserProfileSerializer
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
 class UserRegistrationView(View):
@@ -43,11 +46,28 @@ class UserLoginView(View):
         if serializer.is_valid():
             user = serializer.validated_data['user']
             login(request, user)
-            # return redirect('dashboard')  # Change this to the name of your dashboard URL
+            return redirect('profile')  # Change this to the name of your dashboard URL
         else:
             errors = [str(error) for error_list in serializer.errors.values() for error in error_list]
             return render(request, 'login.html', {'errors': errors})
 
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserProfileSerializer(user)
+        return render(request, 'profile.html', {'serializer': serializer, 'user': user})
+
+    def post(self, request):
+        user = request.user
+        serializer = UserProfileSerializer(user, data=request.POST, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return redirect('profile')
+        else:
+            errors = [str(error) for error_list in serializer.errors.values() for error in error_list]
+            return render(request, 'profile.html', {'serializer': serializer, 'user': user, 'errors': errors})
 
 class HealthMetricsView(generics.ListCreateAPIView):
     queryset = HealthMetric.objects.all()

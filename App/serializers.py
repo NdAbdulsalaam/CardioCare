@@ -45,6 +45,11 @@ class LoginSerializer(serializers.Serializer):
 
         data['user'] = user
         return data
+    
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
 
 class HealthMetricsSerializer(serializers.ModelSerializer):
     class Meta:
