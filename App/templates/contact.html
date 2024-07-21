@@ -47,7 +47,7 @@
 <body>
     <div class="container">
         <h1>Contact Us</h1>
-        <form method="post" action="{% url 'contact' %}" onsubmit="handleSubmit(event)">
+        <form method="post" action="{% url 'user-contact' %}" onsubmit="handleSubmit(event)">
             {% csrf_token %}
             <div id="messages"></div>
             <input type="text" name="name" placeholder="Your Name" required>
