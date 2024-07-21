@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from .models import User, HealthMetric, RiskAssessment, Recommendation, Reminder, ProgressTracking
 
 User = get_user_model()
@@ -25,6 +25,26 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, write_only=True)
+
+    def validate(self, data):
+        username = data.get('username')
+        password = data.get('password')
+
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if user:
+                if not user.is_active:
+                    raise serializers.ValidationError("User is deactivated.")
+            else:
+                raise serializers.ValidationError("Invalid credentials.")
+        else:
+            raise serializers.ValidationError("Must include both username and password.")
+
+        data['user'] = user
+        return data
 
 class HealthMetricsSerializer(serializers.ModelSerializer):
     class Meta:
