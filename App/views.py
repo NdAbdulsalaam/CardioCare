@@ -8,10 +8,13 @@ from .serializers import UserSerializer, HealthMetricsSerializer, RiskAssessment
 
 from django.shortcuts import render, redirect
 from django.views import View
-from rest_framework.views import APIView
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from .serializers import UserSerializer, LoginSerializer, UserProfileSerializer
+from django.core.mail import send_mail
+from django.conf import settings
+from django.http import JsonResponse
+from .serializers import UserSerializer, LoginSerializer, UserProfileSerializer, ContactSerializer
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
@@ -74,6 +77,26 @@ class UserProfileView(APIView):
 def user_logout(request):
     logout(request)
     return redirect('user-login')
+
+class ContactView(APIView):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'contact.html')
+
+    def post(self, request, *args, **kwargs):
+        serializer = ContactSerializer(data=request.data)
+        if serializer.is_valid():
+            # Send email
+            send_mail(
+                f'Contact Form Submission from {serializer.validated_data["name"]}',
+                serializer.validated_data['message'],
+                serializer.validated_data['email'],
+                [settings.EMAIL_HOST_USER],  # To your email
+                fail_silently=False,
+            )
+            return JsonResponse({"message": "Your message has been sent successfully."}, status=status.HTTP_200_OK)
+        else:
+            errors = [str(error) for error_list in serializer.errors.values() for error in error_list]
+            return JsonResponse({"errors": errors}, status=status.HTTP_400_BAD_REQUEST)
 
 class HealthMetricsView(generics.ListCreateAPIView):
     queryset = HealthMetric.objects.all()

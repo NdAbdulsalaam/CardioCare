@@ -1,0 +1,60 @@
+<!-- templates/contact/contact.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Us</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        form { display: flex; flex-direction: column; }
+        input, textarea { margin-bottom: 10px; padding: 10px; font-size: 16px; }
+        button { padding: 10px; font-size: 16px; background-color: #28a745; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #218838; }
+        .error { color: red; }
+    </style>
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errors) {
+                    let errors = '';
+                    for (const [field, errorList] of Object.entries(data.errors)) {
+                        for (const error of errorList) {
+                            errors += `<p class="error">${error}</p>`;
+                        }
+                    }
+                    document.getElementById('messages').innerHTML = errors;
+                } else {
+                    alert(data.message);
+                    form.reset();
+                    document.getElementById('messages').innerHTML = '';
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Us</h1>
+        <form method="post" action="{% url 'contact' %}" onsubmit="handleSubmit(event)">
+            {% csrf_token %}
+            <div id="messages"></div>
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</body>
+</html>

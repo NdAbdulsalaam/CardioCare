@@ -51,6 +51,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name']
 
+class ContactSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=100)
+    email = serializers.EmailField()
+    message = serializers.CharField(max_length=1000)
+
 class HealthMetricsSerializer(serializers.ModelSerializer):
     class Meta:
         model = HealthMetric
