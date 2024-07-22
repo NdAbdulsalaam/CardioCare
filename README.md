@@ -1,5 +1,3 @@
-Combining the concepts from Point 2 (Personalized CVD Risk Assessment Tool) and Point 5 (Lifestyle Management App for CVD Patients), here are the top features that can be developed within 2 days for your hackathon:
-
 ### Combined Idea: CVD Risk and Management Web App
 
 ### Key Features
