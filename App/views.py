@@ -43,7 +43,10 @@ class UserRegistrationView(APIView):
     
 class UserLoginView(APIView):
     def get(self, request, *args, **kwargs):
-        return render(request, 'login.html')
+        context = {
+            'oauth_client_id': settings.OAUTH_CLIENT_ID
+        }
+        return render(request, 'login.html', context)
 
     def post(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.POST)
