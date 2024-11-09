@@ -1,8 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
-    UserRegistrationView, UserLoginView, UserProfileView, user_logout,
-    ContactView,
+    IndexView, UserRegistrationView, UserLoginView, UserProfileView,
+    user_logout, ContactView,
     
     HealthMetricsView, RiskAssessmentViewSet,
     RecommendationsViewSet, RemindersViewSet, ProgressTrackingViewSet
@@ -15,6 +15,7 @@ router.register(r'reminders', RemindersViewSet)
 router.register(r'progress-tracking', ProgressTrackingViewSet)
 
 urlpatterns = [
+    path('', IndexView.as_view(), name='index'),
     path('register/', UserRegistrationView.as_view(), name='user-registration'),
     path('login/', UserLoginView.as_view(), name='user-login'),
     path('profile/', UserProfileView.as_view(), name='user-profile'),

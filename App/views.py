@@ -20,6 +20,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from django.template.loader import render_to_string
 
+
+class IndexView(APIView):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'oauth_client_id': settings.OAUTH_CLIENT_ID
+        }
+        return render(request, 'index.html', context)
+    
 class UserRegistrationView(APIView):
     def get(self, request, *args, **kwargs):
         return render(request, 'register.html')
@@ -43,10 +51,7 @@ class UserRegistrationView(APIView):
     
 class UserLoginView(APIView):
     def get(self, request, *args, **kwargs):
-        context = {
-            'oauth_client_id': settings.OAUTH_CLIENT_ID
-        }
-        return render(request, 'login.html', context)
+        return render(request, 'login.html')
 
     def post(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.POST)
