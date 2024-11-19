@@ -28,7 +28,7 @@ OAUTH_CLIENT_ID = os.getenv('OAUTH_CLIENT_ID')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['.vercel.app', '*']
+ALLOWED_HOSTS = ['*', '.vercel.app']
 
 # Application definition
 
